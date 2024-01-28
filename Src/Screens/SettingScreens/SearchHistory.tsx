@@ -22,7 +22,6 @@ const SearchHistory = () => {
         { id: '7', date: '05 July 2023', description: 'Search for "PlayStation 5"', nbr: 80 },
         { id: '8', date: '22 May 2023', description: 'Search for "Apple Macbook Pro"', nbr: 69 },
         { id: '9', date: '10 June 2023', description: 'Search for "Samsung Galaxy S23"', nbr: 45 },
-        { id: '10', date: '05 July 2023', description: 'Search for "PlayStation 5"', nbr: 80 },
     ];
 
     const handleDelete = (notification: React.SetStateAction<null>) => {

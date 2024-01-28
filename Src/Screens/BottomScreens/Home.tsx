@@ -5,7 +5,6 @@ import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { useNavigation } from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-const { width, height } = Dimensions.get('window');
 import { useTranslation } from 'react-i18next'
 import MapView, { Marker } from 'react-native-maps';
 
