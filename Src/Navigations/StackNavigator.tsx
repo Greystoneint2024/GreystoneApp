@@ -58,7 +58,7 @@ const StackNavigation = () => {
 
     useEffect(() => {
         fetchData();
-        console.log(data, 'dataxxx')
+        console.log(data, 'data')
 
     }, []);
 
@@ -67,8 +67,8 @@ const StackNavigation = () => {
     ) : (
         <Stack.Navigator
             screenOptions={{ headerShown: false }}
-            // initialRouteName="SplashScreen"
-            >
+        // initialRouteName="SplashScreen"
+        >
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Signup" component={Signup} />
             <Stack.Screen name="ForgetScreen" component={ForgetScreen} />
