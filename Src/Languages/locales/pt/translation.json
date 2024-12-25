@@ -1,0 +1,14 @@
+{
+    "Languages": "Idiomas",
+    "language_names": {
+        "en": "Inglês",
+        "sp": "Espanhol",
+        "ar": "Árabe",
+        "pt": "Português",
+        "ru": "Russo",
+        "fr": "Francês",
+        "de": "Alemão",
+        "nl": "Holandês"
+    },
+    "search_language": "Idioma de pesquisa..."
+}
