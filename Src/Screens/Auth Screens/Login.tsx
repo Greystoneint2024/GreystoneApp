@@ -32,10 +32,10 @@ const Login = () => {
             }, {
                 headers: { 'Content-Type': 'application/json' }
             });
+
             await AsyncStorage.setItem('accessToken', response.data.accessToken?.toString());
             await AsyncStorage.setItem('userId', response.data.userId?.toString());
             navigation.navigate("BottomNavigation" as never);
-
         } catch (error) {
             const errorMessage = error?.response?.data?.message || "Login Failed";
             toast.show(errorMessage, {
@@ -96,8 +96,8 @@ const Login = () => {
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        onPress={() => navigation.navigate("BottomNavigation" as never)}
-                        // onPress={handleLogin}
+                        // onPress={() => navigation.navigate("BottomNavigation" as never)}
+                        onPress={handleLogin}
                         style={styles.logbtn}
                     >
                         <Text style={styles.logintxt}>Log in</Text>
@@ -189,11 +189,6 @@ const styles = StyleSheet.create({
         color: '#000',
         borderColor: '#D0D5DD',
         height: 45,
-        // alignItems: 'center',
-        // justifyContent: 'center',
-        paddingTop: 12,
-
-
     },
     emailtxt: {
         fontSize: 16,

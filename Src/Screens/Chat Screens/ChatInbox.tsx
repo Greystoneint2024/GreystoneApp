@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     View,
     Text,
@@ -19,10 +19,12 @@ import { useNavigation } from '@react-navigation/native';
 import Feather from 'react-native-vector-icons/Feather';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import io, { Socket } from 'socket.io-client';
 
 interface ChatInboxProps {
     route: { params?: { senderImage?: any; senderName?: string } };
 }
+const SOCKET_SERVER_URL = 'http://192.168.18.62:3004';
 
 const ChatInbox: React.FC<ChatInboxProps> = ({ route }) => {
     const navigation = useNavigation();
@@ -31,6 +33,7 @@ const ChatInbox: React.FC<ChatInboxProps> = ({ route }) => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [inputText, setInputText] = useState<string>('');
     const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [socket, setSocket] = useState<any>(null);
 
     interface Message {
         id: string;
@@ -41,6 +44,19 @@ const ChatInbox: React.FC<ChatInboxProps> = ({ route }) => {
         timestamp: string;
     }
 
+
+    useEffect(() => {
+        const newSocket: Socket = io(SOCKET_SERVER_URL);
+        setSocket(newSocket);
+
+        newSocket.on('receive_message', (message: Message) => {
+            setMessages((prevMessages) => [...prevMessages, message]);
+        });
+
+        return () => {
+            newSocket.disconnect();
+        };
+    }, []);
     const sendMessage = () => {
         if (inputText.trim() !== '') {
             const newMessage: Message = {
@@ -51,28 +67,44 @@ const ChatInbox: React.FC<ChatInboxProps> = ({ route }) => {
                 isUserMessage: true,
                 timestamp: new Date().toLocaleTimeString(),
             };
+
+            socket.emit('send_message', newMessage);
             setMessages((prevMessages) => [...prevMessages, newMessage]);
             setInputText('');
-            simulateReceivedMessage();
         }
     };
+    // const sendMessage = () => {
+    //     if (inputText.trim() !== '') {
+    //         const newMessage: Message = {
+    //             id: Math.random().toString(),
+    //             text: inputText.trim(),
+    //             senderImage: senderImage,
+    //             senderName: senderName,
+    //             isUserMessage: true,
+    //             timestamp: new Date().toLocaleTimeString(),
+    //         };
+    //         setMessages((prevMessages) => [...prevMessages, newMessage]);
+    //         setInputText('');
+    //         simulateReceivedMessage();
+    //     }
+    // };
 
-    const simulateReceivedMessage = () => {
-        const receivedMessage: Message = {
-            id: Math.random().toString(),
-            text: "Hey, I just got your message!",
-            senderImage: senderImage,
-            senderName: senderName,
-            isUserMessage: false,
-            timestamp: new Date().toLocaleTimeString(),
-        };
-        setMessages((prevMessages) => [...prevMessages, receivedMessage]);
-    };
+    // const simulateReceivedMessage = () => {
+    //     const receivedMessage: Message = {
+    //         id: Math.random().toString(),
+    //         text: "Hey, I just got your message!",
+    //         senderImage: senderImage,
+    //         senderName: senderName,
+    //         isUserMessage: false,
+    //         timestamp: new Date().toLocaleTimeString(),
+    //     };
+    //     setMessages((prevMessages) => [...prevMessages, receivedMessage]);
+    // };
 
-    const deleteMessage = (id: string) => {
-        const updatedMessages = messages.filter((message) => message.id !== id);
-        setMessages(updatedMessages);
-    };
+    // const deleteMessage = (id: string) => {
+    //     const updatedMessages = messages.filter((message) => message.id !== id);
+    //     setMessages(updatedMessages);
+    // };
 
     const handleLongPress = (item: Message) => {
         Alert.alert(
@@ -399,3 +431,7 @@ const styles = StyleSheet.create({
 });
 
 export default ChatInbox;
+
+function deleteMessage(id: string): void {
+    throw new Error('Function not implemented.');
+}

@@ -5,7 +5,6 @@ import { useNavigation } from '@react-navigation/core';
 import Entypo from 'react-native-vector-icons/Entypo'
 import { useToast } from 'react-native-toast-notifications';
 import axios from 'axios';
-// import { AsyncStorage } from 'react-native';
 import { baseURL } from '../../../BaseUrl';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -37,27 +36,19 @@ const ForgetScreen = () => {
 
             })
             .catch(err => {
-                console.log(err)
-                toast.show(' Failed', {
+                console.log(err);
+                toast.show('Failed to send OTP', {
                     dangerColor: '#f66',
                     type: 'danger',
                 });
-                console.log(err.response?.data?.details, 'erro');
-                if (err?.response?.data?.details) {
+                if (err.response) {
+                    console.log(err.response.data, 'Error Response Data');
                     Alert.alert(
-                        err.response?.data?.details[0]?.detail ||
-                        err.response?.data?.details[0]?.message,
-                    );
-                } else if (err?.response?.data?.error) {
-                    Alert.alert(
-                        err?.response?.data?.error[0]?.error ||
-                        err?.response?.data?.error[0]?.message ||
-                        err?.response?.data?.error[0]?.detail,
+                        err.response.data.message || 'An unexpected error occurred',
                     );
                 } else {
-                    Alert.alert(err?.response?.data?.message);
+                    Alert.alert('Network Error', 'Please check your internet connection.');
                 }
-
             });
     };
     console.log(email)
@@ -165,7 +156,7 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         color: '#000',
         borderColor: '#D0D5DD',
-        height: 40,
+        height: 45,
         alignItems: 'center',
         justifyContent: 'center'
     },

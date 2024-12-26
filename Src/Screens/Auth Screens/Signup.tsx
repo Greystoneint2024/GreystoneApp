@@ -352,5 +352,7 @@ const styles = StyleSheet.create({
     phoneInput: {
         flex: 1,
         fontSize: 16,
+        height: 45,
+
     },
 })
