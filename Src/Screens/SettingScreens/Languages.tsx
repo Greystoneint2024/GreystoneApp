@@ -22,7 +22,7 @@ const Languages = () => {
         { tag: 'de', name: 'German' },
         { tag: 'nl', name: 'Dutch' },
     ];
-//@ts-ignore
+    //@ts-ignore
     const handleLanguageSelect = (languageTag) => {
         const selectedLocale = locales.find((l) => l.tag === languageTag);
         if (selectedLocale) {
@@ -41,7 +41,7 @@ const Languages = () => {
             }
         }
     }, []);
-//@ts-ignore
+    //@ts-ignore
     const renderItem = ({ item }) => {
         const active = selectedLanguage === item.tag;
         return (
@@ -61,7 +61,7 @@ const Languages = () => {
             <View style={styles.mainContainer}>
                 <View style={styles.flex}>
                     <TouchableOpacity
-                        onPress={() => navigation.navigate('Account' as never)}
+                        onPress={() => navigation.goBack()}
                         style={styles.back}>
                         <Entypo name="chevron-left" color={'#000'} size={25} />
                     </TouchableOpacity>
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     },
     flex: {
         flexDirection: 'row',
-        gap: 100,
+        gap: 10,
         alignItems: 'center',
     },
     searchContainer: {

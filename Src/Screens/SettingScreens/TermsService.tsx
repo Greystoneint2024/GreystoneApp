@@ -14,8 +14,7 @@ const TermsService = () => {
                 <View style={styles.mainContainer}>
                     <View style={styles.flex}>
                         <TouchableOpacity
-                            //@ts-ignore
-                            onPress={() => navigation.navigate("Account")}
+                            onPress={() => navigation.goBack()}
                             style={styles.back}>
                             <Entypo name='chevron-left' color={'#000'} size={25} />
                         </TouchableOpacity>
@@ -46,7 +45,7 @@ export default TermsService
 
 const styles = StyleSheet.create({
     mainContainer: {
-        marginTop: 20,
+        marginTop: 10,
         marginHorizontal: 10,
         backgroundColor: '#FFF',
     },
@@ -61,7 +60,7 @@ const styles = StyleSheet.create({
     flex: {
         flexDirection: "row",
         alignItems: "center",
-        gap: 100
+        gap: 20
     },
     Contact: {
         fontSize: 20,

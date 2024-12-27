@@ -168,7 +168,9 @@ const ProfileEdit: React.FC = () => {
             <ScrollView>
                 <View style={styles.mainContainer}>
                     <View style={styles.flex}>
-                        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.back}>
+                        <TouchableOpacity
+                            onPress={() => navigation.goBack()}
+                            style={styles.back}>
                             <Entypo name="chevron-left" color="#000" size={scaleFont(25)} />
                         </TouchableOpacity>
                         <Text style={styles.Contact}>{t('Profile')}</Text>

@@ -71,7 +71,7 @@ const UpdatePassword = () => {
                 <View style={styles.mainContainer}>
                     <View style={styles.flex}>
                         <TouchableOpacity
-                            onPress={() => navigation.navigate("Account" as never)}
+                            onPress={() => navigation.goBack()}
                             style={styles.back}>
                             <Entypo name='chevron-left' color={'#000'} size={scaleSize(25)} />
                         </TouchableOpacity>
@@ -162,7 +162,7 @@ export default UpdatePassword
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
-        marginTop: scaleSize(20),
+        marginTop: scaleSize(10),
         backgroundColor: '#FFFF',
     },
     back: {
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
     flex: {
         flexDirection: "row",
         alignItems: "center",
-        gap: scaleSize(60)
+        // gap: scaleSize(60)
     }
 });
 

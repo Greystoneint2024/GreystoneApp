@@ -133,7 +133,7 @@ export default CustomerAgents;
 
 const styles = StyleSheet.create({
     mainContainer: {
-        marginTop: 20,
+        marginTop: 10,
         marginHorizontal: 10,
         backgroundColor: '#FFF',
     },
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     flex: {
         flexDirection: "row",
         alignItems: "center",
-        gap: 100
+        gap: 20
     },
     Contact: {
         fontSize: 20,

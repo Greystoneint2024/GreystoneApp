@@ -72,8 +72,7 @@ const SearchHistory = () => {
                 <View style={styles.mainContainer}>
                     <View style={styles.flex}>
                         <TouchableOpacity
-                            //@ts-ignore
-                            onPress={() => navigation.navigate("Account")}
+                            onPress={() => navigation.goBack()}
                             style={styles.back}
                         >
                             <Entypo name='chevron-left' color={'#000'} size={25} />
@@ -120,7 +119,7 @@ const SearchHistory = () => {
 
 const styles = StyleSheet.create({
     mainContainer: {
-        marginTop: 20,
+        marginTop: 10,
         backgroundColor: '#FFFFF',
     },
     back: {
@@ -135,7 +134,7 @@ const styles = StyleSheet.create({
     flex: {
         flexDirection: "row",
         alignItems: "center",
-        gap: 80
+        gap: 10
     },
     contact: {
         fontSize: 18,

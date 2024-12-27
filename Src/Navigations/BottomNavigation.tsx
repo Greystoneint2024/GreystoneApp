@@ -114,7 +114,6 @@ const BottomNavigation: React.FC = ({ data }: any) => {
                 name="Favorites"
                 children={() => <Favorites data={data} />}
             />
-            {/* <Tab.Screen name="Favorites" component={Favorites} /> */}
             <Tab.Screen name="Contact" component={Contact} />
             <Tab.Screen name="Account" component={Account} />
             <Tab.Screen

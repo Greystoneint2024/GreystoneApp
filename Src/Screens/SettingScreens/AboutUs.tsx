@@ -18,8 +18,7 @@ const AboutUs = () => {
                 <View style={styles.mainContainer}>
                     <View style={styles.flex}>
                         <TouchableOpacity
-                            //@ts-ignore
-                            onPress={() => navigation.navigate("Account")}
+                            onPress={() => navigation.goBack()}
                             style={styles.back}>
                             <Entypo name='chevron-left' color={'#000'} size={25} />
                         </TouchableOpacity>

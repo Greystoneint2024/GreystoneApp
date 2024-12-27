@@ -157,7 +157,7 @@ const Recommendations = ({ navigation }) => {
                     <View style={styles.mainContainer}>
                         <View style={styles.flex}>
                             <TouchableOpacity
-                                onPress={() => navigation.navigate("Account")}
+                                onPress={() => navigation.goBack()}
                                 style={styles.back}>
                                 <Entypo name='chevron-left' color={'#000'} size={25} />
                             </TouchableOpacity>
@@ -173,7 +173,7 @@ const Recommendations = ({ navigation }) => {
 export default Recommendations;
 const styles = StyleSheet.create({
     mainContainer: {
-        marginTop: 20,
+        marginTop: 10,
         marginHorizontal: 15,
         backgroundColor: '#FFF',
     },
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
     flex: {
         flexDirection: "row",
         alignItems: "center",
-        gap: 100
+        gap: 20
     },
     Contact: {
         fontSize: 20,

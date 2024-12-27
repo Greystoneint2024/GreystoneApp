@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     flex: {
         flexDirection: 'row',
         alignItems: 'center',
-        gap: scaleSize(60),
+        // gap: scaleSize(10),
     },
     watch: {
         fontSize: scaleFont(14),

@@ -31,6 +31,7 @@ import FavoriteSelect from '../Screens/StackScreens/FavoriteSelect';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { baseURL } from '../../BaseUrl';
+import Account from '../Screens/BottomScreens/Account';
 
 const StackNavigation = () => {
     const Stack = createNativeStackNavigator();
@@ -101,9 +102,6 @@ const StackNavigation = () => {
             <Stack.Screen name="HowItsWorks" component={HowItsWorks} />
             <Stack.Screen name="MapScreen" component={MapScreen} />
             <Stack.Screen name="FavoriteSelect" component={FavoriteSelect} />
-
-
-
 
         </Stack.Navigator>
     );
