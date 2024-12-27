@@ -12,7 +12,6 @@ import {
     Dimensions,
     PixelRatio,
     PermissionsAndroid,
-    Alert,
 } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -26,6 +25,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { baseURL } from '../../../BaseUrl';
 import { useToast } from 'react-native-toast-notifications';
+
 axios.defaults.baseURL = baseURL;
 
 
@@ -38,7 +38,6 @@ interface DateInputProps {
     value: Date | null;
     onChange: (date: Date | null) => void;
 }
-
 //@ts-ignore
 const DateInput = ({ value, onChange }) => {
     const [showPicker, setShowPicker] = useState(false);
@@ -49,17 +48,16 @@ const DateInput = ({ value, onChange }) => {
             onChange(selectedDate);
         }
     };
-
     return (
-        <View style={styles.dateInputContainer}>
+        <View style={styles.inputrate}>
             <TextInput
                 style={styles.inputWithIcon}
+                placeholder='MM/DD/YYYY'
                 value={value ? value.toLocaleDateString() : ''}
                 editable={false}
-                placeholderTextColor={"#8A8A8A"}
             />
             <TouchableOpacity onPress={() => setShowPicker(true)} style={styles.calendarIcon}>
-                <AntDesign name="calendar" size={scaleFont(20)} color="#000" />
+                <AntDesign name="calendar" size={20} color="#000" />
             </TouchableOpacity>
             {showPicker && (
                 <DateTimePicker
@@ -206,7 +204,7 @@ const ProfileEdit: React.FC = () => {
                 <View style={styles.mainContainer}>
                     <View style={styles.flex}>
                         <TouchableOpacity
-                            onPress={() => navigation.navigate("Account" as never)}
+                            onPress={() => navigation.goBack()}
                             style={styles.back}
                         >
                             <Entypo name="chevron-left" color={'#000'} size={scaleFont(25)} />
@@ -266,9 +264,7 @@ const ProfileEdit: React.FC = () => {
                         />
                     </View>
                     <Text style={styles.birthltxt}>{t('Date of Birth')}</Text>
-                    <View style={styles.email}>
-                        <DateInput value={dateOfBirth} onChange={setdateOfBirth} />
-                    </View>
+                    <DateInput value={dateOfBirth} onChange={setdateOfBirth} />
                     <View style={styles.email}>
                         <Text style={styles.emailtxt}>{t('Country')}</Text>
                         <TouchableOpacity onPress={() => setIsVisible(true)} style={styles.countryContainer}>
@@ -398,24 +394,16 @@ const styles = StyleSheet.create({
         fontSize: scaleFont(16),
         color: '#344054',
     },
-    dateInputContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        position: "relative",
-    },
     inputWithIcon: {
-        width: '100%',
-        height: scaleSize(45),
-        fontSize: scaleFont(16),
-        backgroundColor: 'white',
-        borderWidth: 2,
-        borderRadius: 10,
-        paddingLeft: scaleSize(20),
-        borderColor: '#D0D5DD',
+        flex: 1,
+        height: '100%',
+        fontSize: 16,
+        paddingLeft: 10,
     },
     calendarIcon: {
-        position: 'absolute',
-        right: scaleSize(15),
+        paddingHorizontal: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     countryContainer: {
         flexDirection: 'row',
@@ -455,5 +443,19 @@ const styles = StyleSheet.create({
         color: 'white',
         fontWeight: 'bold',
         fontSize: scaleFont(18),
-    }
+    },
+    inputrate: {
+        width: '100%',
+        height: 45,
+        fontSize: 16,
+        backgroundColor: 'white',
+        borderWidth: 2,
+        borderRadius: 10,
+        paddingLeft: 10,
+        borderColor: '#D0D5DD',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingRight: 10
+    },
 });

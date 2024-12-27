@@ -206,36 +206,37 @@ const PropertyDetail = () => {
                         <View style={styles.flexlast}>
                             <View style={{ width: '33%' }}>
                                 <Text style={styles.txt4p}>{t("HOUSE/APARTMENT TYPE")}</Text>
-                                <Text style={styles.txt3}>{cardData.propertyType}</Text>
+                                <Text style={styles.txt3}>{cardData?.propertyType || "-"}</Text>
                             </View>
                             <View style={styles.line2} />
                             <View style={{ width: '33%' }}>
                                 <Text style={styles.txt4}>{t("SQUARE METERS")}</Text>
-                                <Text style={styles.txt3}>{cardData?.built} </Text>
+                                <Text style={styles.txt3}>{cardData?.built || "-"}</Text>
                             </View>
                             <View style={styles.line2} />
                             <View style={{ width: '33%' }}>
                                 <Text style={styles.txt4}>{t("Plot surface")}</Text>
-                                <Text style={styles.txt3}>{cardData?.plot}</Text>
+                                <Text style={styles.txt3}>{cardData?.plot || "-"}</Text>
                             </View>
                         </View>
                         <View style={styles.line} />
                         <View style={styles.flexlast}>
                             <View style={{ width: '33%' }}>
                                 <Text style={styles.txt4p}>{t("Condition")}</Text>
-                                <Text style={styles.txt3}>{cardData.condition}</Text>
+                                <Text style={styles.txt3}>{cardData?.condition || "-"}</Text>
                             </View>
                             <View style={styles.line2} />
                             <View style={{ width: '33%' }}>
                                 <Text style={styles.txt4}>{t("Property Health Score")}</Text>
-                                <Text style={styles.txt3}>{cardData?.PropertyHealthScore} </Text>
+                                <Text style={styles.txt3}>{cardData?.PropertyHealthScore || "-"}</Text>
                             </View>
                             <View style={styles.line2} />
                             <View style={{ width: '33%' }}>
                                 <Text style={styles.txt4}>{t("UseableSpace")}</Text>
-                                <Text style={styles.txt3}>{cardData?.useableSpace}</Text>
+                                <Text style={styles.txt3}>{cardData?.useableSpace || "-"}</Text>
                             </View>
                         </View>
+
                         <View style={styles.line} />
                     </View>
                     <View style={styles.Discription}>
