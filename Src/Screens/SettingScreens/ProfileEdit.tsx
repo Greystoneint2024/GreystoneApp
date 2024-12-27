@@ -11,11 +11,9 @@ import {
     View,
     Dimensions,
     PixelRatio,
-    PermissionsAndroid,
 } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import ImagePicker from "react-native-image-crop-picker";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -25,34 +23,29 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { baseURL } from '../../../BaseUrl';
 import { useToast } from 'react-native-toast-notifications';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 axios.defaults.baseURL = baseURL;
-
 
 const { width } = Dimensions.get('window');
 const scaleFont = (size: number) => size * PixelRatio.getFontScale();
 const scaleSize = (size: number) => (width / 375) * size;
 
-
-interface DateInputProps {
-    value: Date | null;
-    onChange: (date: Date | null) => void;
-}
-//@ts-ignore
-const DateInput = ({ value, onChange }) => {
+const DateInput = ({ value, onChange }: { value: Date | null; onChange: (date: Date | null) => void }) => {
     const [showPicker, setShowPicker] = useState(false);
 
     const handleDateChange = (event: any, selectedDate: any) => {
-        setShowPicker(Platform.OS === 'ios');
+        setShowPicker(Platform.OS === 'android');
         if (selectedDate) {
             onChange(selectedDate);
         }
     };
+
     return (
         <View style={styles.inputrate}>
             <TextInput
                 style={styles.inputWithIcon}
-                placeholder='MM/DD/YYYY'
+                placeholder="MM/DD/YYYY"
                 value={value ? value.toLocaleDateString() : ''}
                 editable={false}
             />
@@ -73,109 +66,83 @@ const DateInput = ({ value, onChange }) => {
 
 const ProfileEdit: React.FC = () => {
     const navigation = useNavigation();
-    const [dateOfBirth, setdateOfBirth] = useState<Date | null>(null);
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [contactNumber, setContactNumber] = useState('');
-    const [avatarUri, setAvatarUri] = useState<string | null>(null);
-    const [countryCode, setCountryCode] = useState<CountryCode>('FR');
-    const [country, setCountry] = useState<Country | null>(null);
-    const [isVisible, setIsVisible] = useState(false);
     const { t } = useTranslation();
     const toast = useToast();
 
-    useEffect(() => {
-        requestPermission();
-        getCurrentUser;
-    }, []);
+    const [dateOfBirth, setDateOfBirth] = useState<Date | null>(null);
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [contactNumber, setContactNumber] = useState('');
+    const [countryCode, setCountryCode] = useState<CountryCode>('FR');
+    const [country, setCountry] = useState<Country | null>(null);
+    const [isVisible, setIsVisible] = useState(false);
+    const [imageUri, setImageUri] = useState<string | null>(null);
 
-    const requestPermission = async () => {
-        if (Platform.OS === 'android') {
-            try {
-                const granted = await PermissionsAndroid.request(
-                    PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-                    {
-                        title: "Photo Access",
-                        message: "App needs access to your photos to update your profile picture",
-                        buttonPositive: "OK"
-                    }
-                );
-                if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-                }
-            } catch (err) {
-                console.warn(err);
+    const pickImage = () => {
+        const options = {
+            mediaType: 'photo',
+            maxWidth: 300,
+            maxHeight: 300,
+            quality: 1,
+        };
+        //@ts-ignore
+        launchImageLibrary(options, (response) => {
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.errorCode) {
+                console.error('ImagePicker Error:', response.errorMessage);
+            } else if (response.assets && response.assets.length > 0) {
+                setImageUri(response.assets[0].uri);
             }
-        }
+        });
     };
 
-
-    const [file, setFile] = useState('');
-    // console.log(file);
-    const pickPicture = () => {
-        ImagePicker.openPicker({
-            width: 300,
-            height: 400,
-            cropping: true,
-        })
-            .then(image => {
-                setAvatarUri(image.path);
-                //@ts-ignore
-                setFile(image);
-                //@ts-ignore
-                onChange?.(image);
-            })
-            .catch(error => {
-                console.log('ImagePicker Error: ', error);
-            });
-    };
     const onSelectCountry = (selectedCountry: Country) => {
         setCountryCode(selectedCountry.cca2);
         setCountry(selectedCountry);
         setIsVisible(false);
     };
-    const [data, setdata] = useState([])
-    const getCurrentUser = () => {
-        AsyncStorage.getItem('accessToken')
-            .then(accessToken => {
-                if (accessToken) {
-                    return axios.get('/users/getCurrentUser', {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            accessToken
-                        },
-                    });
-                } else {
-                    console.log('No access token found');
-                    return Promise.reject('No access token found');
-                }
-            })
-            .then(response => {
-                const userData = response?.data?.data;
-                setName(userData?.name || '');
-                setEmail(userData?.email || '');
-                setContactNumber(userData?.contactNumber || '');
-            })
-            .catch(error => {
-                console.error('Failed to fetch user data:', error);
-                toast.show('Failed to load user data', { type: 'danger' });
+
+    const getCurrentUser = async () => {
+        try {
+            const accessToken = await AsyncStorage.getItem('accessToken');
+            if (!accessToken) throw new Error('No access token found');
+
+            const response = await axios.get('/users/getCurrentUser', {
+                headers: { 'Content-Type': 'application/json', accessToken },
             });
+
+            const userData = response?.data?.data;
+            setName(userData?.name || '');
+            setEmail(userData?.email || '');
+            setContactNumber(userData?.contactNumber || '');
+        } catch (error) {
+            console.error('Failed to fetch user data:', error);
+            toast.show('Failed to load user data', { type: 'danger' });
+        }
     };
 
     useEffect(() => {
         getCurrentUser();
     }, []);
+
     const saveProfile = async () => {
         try {
             const accessToken = await AsyncStorage.getItem('accessToken');
+            if (!accessToken) throw new Error('No access token found');
+
             const formData = new FormData();
-            formData.append('image', {
-                //@ts-ignore
-                uri: file.path,
-                //@ts-ignore
-                type: file.mime,
-                //@ts-ignore
-                name: file.path?.split('/')?.pop(),
-            });
+            if (imageUri) {
+                const fileName = imageUri.split('/').pop()!;
+                const fileType = `image/${fileName.split('.').pop()}`;
+
+                formData.append('image', {
+                    uri: imageUri,
+                    type: fileType,
+                    name: fileName,
+                });
+            }
+
             formData.append('name', name);
             formData.append('email', email);
             formData.append('contactNumber', contactNumber);
@@ -187,58 +154,57 @@ const ProfileEdit: React.FC = () => {
                     accessToken,
                 },
             });
+
             toast.show('Profile updated successfully', { type: 'success' });
             navigation.navigate('Account' as never);
         } catch (err) {
-            //@ts-ignore
             const errorMessage = err?.response?.data?.message || err.message || 'An error occurred';
-            toast.show(errorMessage, { type: 'danger', dangerColor: '#f66' });
+            toast.show(errorMessage, { type: 'danger' });
         }
     };
-
-
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
             <ScrollView>
                 <View style={styles.mainContainer}>
                     <View style={styles.flex}>
-                        <TouchableOpacity
-                            onPress={() => navigation.goBack()}
-                            style={styles.back}
-                        >
-                            <Entypo name="chevron-left" color={'#000'} size={scaleFont(25)} />
+                        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.back}>
+                            <Entypo name="chevron-left" color="#000" size={scaleFont(25)} />
                         </TouchableOpacity>
                         <Text style={styles.Contact}>{t('Profile')}</Text>
                     </View>
                     <View style={styles.container}>
-                        {avatarUri ? (
-                            <TouchableOpacity onPress={pickPicture}>
-                                <Image source={{ uri: avatarUri }} style={styles.avatar} />
+                        {imageUri ? (
+                            <TouchableOpacity onPress={pickImage}>
+                                <Image source={{ uri: imageUri }} style={styles.avatar} />
                             </TouchableOpacity>
                         ) : (
                             <View style={styles.placeholder}>
                                 <Image
                                     style={styles.img}
-                                    source={require("./../../Assets/Images/pic.png")}
+                                    source={require('./../../Assets/Images/pic.png')}
                                 />
-                                <TouchableOpacity onPress={pickPicture}>
+                                <TouchableOpacity onPress={pickImage}>
                                     <View style={styles.Icon}>
-                                        <MaterialCommunityIcons name="camera-plus" size={scaleFont(16)} color={"#FFF"} />
+                                        <MaterialCommunityIcons
+                                            name="camera-plus"
+                                            size={scaleFont(16)}
+                                            color="#FFF"
+                                        />
                                     </View>
                                 </TouchableOpacity>
                             </View>
                         )}
                     </View>
-                    <Text style={styles.name}>{data?.name}</Text>
+                    <Text style={styles.name}>{name}</Text>
                     <View style={styles.email}>
                         <Text style={styles.emailtxt}>{t('Name')}</Text>
                         <TextInput
                             style={styles.input}
                             placeholder="Enter Name"
                             value={name}
-                            onChangeText={text => setName(text)}
-                            placeholderTextColor={'#667085'}
+                            onChangeText={setName}
+                            placeholderTextColor="#667085"
                         />
                     </View>
                     <View style={styles.email}>
@@ -248,8 +214,8 @@ const ProfileEdit: React.FC = () => {
                             placeholder="Enter Email"
                             keyboardType="email-address"
                             value={email}
-                            onChangeText={text => setEmail(text)}
-                            placeholderTextColor={'#667085'}
+                            onChangeText={setEmail}
+                            placeholderTextColor="#667085"
                         />
                     </View>
                     <View style={styles.email}>
@@ -259,20 +225,17 @@ const ProfileEdit: React.FC = () => {
                             keyboardType="numeric"
                             placeholder="Enter Phone Number"
                             value={contactNumber}
-                            onChangeText={text => setContactNumber(text)}
-                            placeholderTextColor={'#667085'}
+                            onChangeText={setContactNumber}
+                            placeholderTextColor="#667085"
                         />
                     </View>
                     <Text style={styles.birthltxt}>{t('Date of Birth')}</Text>
-                    <DateInput value={dateOfBirth} onChange={setdateOfBirth} />
+                    <DateInput value={dateOfBirth} onChange={setDateOfBirth} />
                     <View style={styles.email}>
                         <Text style={styles.emailtxt}>{t('Country')}</Text>
                         <TouchableOpacity onPress={() => setIsVisible(true)} style={styles.countryContainer}>
-                            {country && country.flag && (
-                                <View style={styles.flagAndCountry}>
-                                    <Image source={{ uri: country.flag }} style={styles.flag} />
-                                    <Text style={styles.countryText}>{country.name || ''}</Text>
-                                </View>
+                            {country && (
+                                <Text style={styles.countryText}>{country.name || ''}</Text>
                             )}
                             <CountryPicker
                                 countryCode={countryCode}
@@ -287,18 +250,14 @@ const ProfileEdit: React.FC = () => {
                             />
                         </TouchableOpacity>
                     </View>
-                    <TouchableOpacity
-                        onPress={saveProfile}
-                        style={styles.logbtn}>
+                    <TouchableOpacity onPress={saveProfile} style={styles.logbtn}>
                         <Text style={styles.logintxt}>{t('Save Changes')}</Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>
         </SafeAreaView>
     );
-}
-
-export default ProfileEdit;
+};
 
 const styles = StyleSheet.create({
     mainContainer: {
@@ -459,3 +418,5 @@ const styles = StyleSheet.create({
         paddingRight: 10
     },
 });
+
+export default ProfileEdit;

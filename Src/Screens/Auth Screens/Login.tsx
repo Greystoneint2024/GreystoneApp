@@ -102,15 +102,11 @@ const Login = () => {
                     >
                         <Text style={styles.logintxt}>Log in</Text>
                     </TouchableOpacity>
-
                     <View style={{ flexDirection: 'row', gap: 5, alignSelf: 'center' }}>
                         <Text style={styles.text3}>Don’t have an account?</Text>
                         <TouchableOpacity onPress={() => navigation.navigate("Signup" as never)}>
                             <Text style={styles.text4}>Sign up</Text>
                         </TouchableOpacity>
-                    </View>
-                    <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-                        <View style={styles.orline} />
                     </View>
                     <TouchableOpacity style={styles.googlebtn}>
                         <Image style={styles.gicon} source={require('../../Assets/Icons/Google.png')} />
