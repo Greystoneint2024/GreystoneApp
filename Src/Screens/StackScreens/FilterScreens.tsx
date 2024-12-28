@@ -1,7 +1,9 @@
-import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View, TextInput, Platform } from 'react-native';
 import React, { useState } from 'react';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { Checkbox } from 'react-native-paper';
+import CheckBox from '@react-native-community/checkbox';
+import { Checkbox as PaperCheckbox } from 'react-native-paper';
+
 import SliderCompo from './SliderCompo';
 import { useTranslation } from 'react-i18next'
 //@ts-ignore
@@ -9,7 +11,11 @@ const FilterScreens = ({ navigation }) => {
     const { t } = useTranslation();
     const [activeButton, setActiveButton] = useState('');
     const [priceRange, setPriceRange] = useState([0, 580000]);
-    const [checked, setChecked] = React.useState(false);
+
+    const [isChecked, setIsChecked] = useState(false);
+    const [isChecked2, setIsChecked2] = useState(false);
+    const [isChecked3, setIsChecked3] = useState(false);
+    const [checked, setChecked] = useState(false);
     const [checked2, setChecked2] = useState(false);
     const [checked3, setChecked3] = useState(false);
     const [location, setLocation] = useState('');
@@ -162,33 +168,51 @@ const FilterScreens = ({ navigation }) => {
                         //@ts-ignore
                         priceRange={priceRange} onValuesChange={handleValuesChange} />
                     <View style={styles.check}>
-                        <Checkbox
-                            status={checked ? 'checked' : 'unchecked'}
-                            onPress={() => {
-                                setChecked(!checked);
-                            }}
-                            color="#101828"
-                        />
+                        {Platform.OS === 'ios' ? (
+                            <CheckBox
+                                value={isChecked}
+                                onValueChange={setIsChecked}
+                                tintColors={{ true: '#00f', false: '#000' }}
+                            />
+                        ) : (
+                            <PaperCheckbox
+                                status={checked ? 'checked' : 'unchecked'}
+                                onPress={() => setChecked(!checked)}
+                                color="#101828"
+                            />
+                        )}
                         <Text style={styles.checktxt}>{t("Exclusive Property")}</Text>
                     </View>
                     <View style={styles.check}>
-                        <Checkbox
-                            status={checked2 ? 'checked' : 'unchecked'}
-                            onPress={() => {
-                                setChecked2(!checked2);
-                            }}
-                            color="#101828"
-                        />
+                        {Platform.OS === 'ios' ? (
+                            <CheckBox
+                                value={isChecked2}
+                                onValueChange={setIsChecked2}
+                                tintColors={{ true: '#00f', false: '#000' }}
+                            />
+                        ) : (
+                            <PaperCheckbox
+                                status={checked2 ? 'checked' : 'unchecked'}
+                                onPress={() => setChecked2(!checked2)}
+                                color="#101828"
+                            />
+                        )}
                         <Text style={styles.checktxt}>{t("New Built")}</Text>
                     </View>
                     <View style={styles.check}>
-                        <Checkbox
-                            status={checked3 ? 'checked' : 'unchecked'}
-                            onPress={() => {
-                                setChecked3(!checked3);
-                            }}
-                            color="#101828"
-                        />
+                        {Platform.OS === 'ios' ? (
+                            <CheckBox
+                                value={isChecked3}
+                                onValueChange={setIsChecked3}
+                                tintColors={{ true: '#00f', false: '#000' }}
+                            />
+                        ) : (
+                            <PaperCheckbox
+                                status={checked3 ? 'checked' : 'unchecked'}
+                                onPress={() => setChecked3(!checked3)}
+                                color="#101828"
+                            />
+                        )}
                         <Text style={styles.checktxt}>{t("Pool")}</Text>
                     </View>
                     <TouchableOpacity
@@ -197,7 +221,7 @@ const FilterScreens = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
             </ScrollView>
-        </SafeAreaView>
+        </SafeAreaView >
     );
 };
 
@@ -206,7 +230,6 @@ export default FilterScreens;
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
-        marginTop: 10,
         backgroundColor: '#FFFF',
     },
     back: {

@@ -103,7 +103,7 @@ const HomeCards = ({ Favdata, fetchFavData }) => {
         fetchData();
     }, []);
 
-    const handleSearch = (query) => {
+    const handleSearch = (query: React.SetStateAction<string>) => {
         setSearchQuery(query);
     };
 
@@ -132,7 +132,7 @@ const HomeCards = ({ Favdata, fetchFavData }) => {
         };
         loadFavorites();
     }, [cardData]);
-
+    //@ts-ignore
     const toggleFavorite = async (index, itemId) => {
         const userId = await AsyncStorage.getItem('userId');
         const selectedFavId = favIds[itemId];
@@ -179,7 +179,7 @@ const HomeCards = ({ Favdata, fetchFavData }) => {
             console.error('Error during favorite action:', error);
         }
     };
-
+    //@ts-ignore
     const renderCard = ({ item, index }) => (
         <View style={{ paddingHorizontal: 15 }}>
             <View style={styles.imagecont}>
@@ -214,16 +214,14 @@ const HomeCards = ({ Favdata, fetchFavData }) => {
                 </View>
             </View>
             <TouchableOpacity
-                // onPress={async () => {
-                //     AsyncStorage.setItem('listingId', item?.id?.toString())
-                //     navigation.navigate('PropertyDetail', { item })
-                // }}
-                //@ts
-                onPress={() => navigation.navigate('PropertyDetail', { item })}
-
+                onPress={async () => {
+                    AsyncStorage.setItem('listingId', item?.id?.toString())
+                    navigation.navigate('PropertyDetail', { item })
+                }}
+            // onPress={() => navigation.navigate('PropertyDetail', { item })}
             >
                 <View style={styles.flexprice}>
-                    <Text style={styles.name}>{item?.address}</Text>
+                    <Text style={styles.name}>{item?.PropertyName}</Text>
                     <Text style={styles.name}>€ {item?.price}</Text>
                 </View>
                 <View style={styles.flexicons}>

@@ -72,7 +72,7 @@ const MortgageCalculator = () => {
     const [downPayment, setdownPayment] = useState('');
     const [loanTerms, setloanTerms] = useState('');
     const [interestRate, setinterestRate] = useState('');
-    const [taxes, setTaxes] = useState('');
+    // const [taxes, setTaxes] = useState('');
     const [Inusurance, setInusurance] = useState('');
     const [healthCare, setHealthCare] = useState('');
     const [CFees, setCFees] = useState('');
@@ -91,7 +91,7 @@ const MortgageCalculator = () => {
                     loanTermYears: Number(loanTerms),
                     interestRate: Number(interestRate),
                     startDate: startDate,
-                    propertyTaxPercentage: Number(taxes),
+                    // propertyTaxPercentage: Number(taxes),
                     homeInsurance: Number(Inusurance),
                     healthCare: Number(healthCare),
                     communityFees: Number(CFees),
@@ -155,6 +155,7 @@ const MortgageCalculator = () => {
                             value={homePrice}
                             onChange={e => setHomePrice(e.nativeEvent.text)}
                             placeholder={t('Price')}
+                            placeholderTextColor={'#555555'}
                             keyboardType='numeric'
                         />
                     </View>
@@ -225,10 +226,11 @@ const MortgageCalculator = () => {
                             <View style={styles.flexall}>
                                 <View style={styles.inputpay}>
                                     <TextInput
-                                        value={taxes}
-                                        onChange={e => setTaxes(e.nativeEvent.text)}
-                                        placeholder={t('Taxes')}
-                                        keyboardType='numeric'
+                                        // value={taxes}
+                                        // onChange={e => setTaxes(e.nativeEvent.text)}
+                                        placeholderTextColor={'#101828'}
+                                        placeholder={t('10%')}
+                                    // keyboardType='numeric'
                                     />
                                 </View>
                                 <View style={styles.inputpercent}>

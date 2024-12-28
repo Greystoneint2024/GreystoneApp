@@ -70,7 +70,7 @@ const CustomerAgents = () => {
                         <View style={styles.mainContainer}>
                             <View style={styles.flex}>
                                 <TouchableOpacity
-                                    onPress={() => navigation.navigate("Contact" as never)}
+                                    onPress={() => navigation.goBack()}
                                     style={styles.back}>
                                     <Entypo name='chevron-left' color={'#000'} size={25} />
                                 </TouchableOpacity>
