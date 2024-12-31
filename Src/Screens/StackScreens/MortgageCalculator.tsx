@@ -72,6 +72,7 @@ const MortgageCalculator = () => {
     const [downPayment, setdownPayment] = useState('');
     const [loanTerms, setloanTerms] = useState('');
     const [interestRate, setinterestRate] = useState('');
+    const [taxes, setTaxes] = useState("10%");
     // const [taxes, setTaxes] = useState('');
     const [Inusurance, setInusurance] = useState('');
     const [healthCare, setHealthCare] = useState('');
@@ -226,11 +227,10 @@ const MortgageCalculator = () => {
                             <View style={styles.flexall}>
                                 <View style={styles.inputpay}>
                                     <TextInput
-                                        // value={taxes}
-                                        // onChange={e => setTaxes(e.nativeEvent.text)}
-                                        placeholderTextColor={'#101828'}
-                                        placeholder={t('10%')}
-                                    // keyboardType='numeric'
+                                        value="10%"
+                                        onChangeText={text => setTaxes(text)}
+                                        placeholderTextColor="#101828"
+                                        style={{ color: '#101828' }}
                                     />
                                 </View>
                                 <View style={styles.inputpercent}>
