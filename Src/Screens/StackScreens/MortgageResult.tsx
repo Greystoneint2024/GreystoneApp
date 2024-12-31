@@ -1,4 +1,4 @@
-import { ScrollView, TouchableOpacity, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, TouchableOpacity, StyleSheet, Text, View, Linking, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/core';
@@ -37,6 +37,18 @@ const MortgageResult = () => {
   const { t } = useTranslation();
   const [mortgageData, setMortgageData] = useState<MortgageData | null>(null);
 
+
+
+  const handlePress = async () => {
+    const url = 'https://habeno.com/';
+    const supported = await Linking.canOpenURL(url);
+
+    if (supported) {
+      await Linking.openURL(url);
+    } else {
+      Alert.alert('Error', "Can't open the website. Please try again later.");
+    }
+  };
   useEffect(() => {
     const fetchMortgageData = async () => {
       try {
@@ -130,7 +142,9 @@ const MortgageResult = () => {
               <Text style={styles.btnprnttxt2}>{t("Close")}</Text>
             </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.apply}>
+          <TouchableOpacity
+            onPress={handlePress}
+            style={styles.apply}>
             <Text style={styles.btnprnttxt}>{t("Apply For Pre-Approval")}</Text>
           </TouchableOpacity>
         </View>
@@ -139,6 +153,7 @@ const MortgageResult = () => {
   );
 };
 export default MortgageResult
+{/* https://habeno.com/ */ }
 
 const styles = StyleSheet.create({
   mainContainer: {
