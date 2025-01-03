@@ -6,6 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
+import { baseURL } from '../../../BaseUrl';
 
 
 type CardData = {
@@ -158,7 +159,11 @@ const Contact = () => {
                                         <View style={styles.mainflexl}>
                                             <View style={styles.container}>
                                                 <Image
-                                                    source={card.image} style={styles.profilePic} />
+                                                    source={{
+                                                        uri: `${baseURL}/images/${card?.image}`
+                                                    }}
+                                                    style={styles.profilePic}
+                                                />
                                             </View>
                                             <View>
                                                 <Text style={styles.newHeader}>{card.name}</Text>
@@ -391,7 +396,7 @@ const styles = StyleSheet.create({
     newSection: {
         backgroundColor: '#FFFFFF',
         borderRadius: 10,
-        height: 265,
+        height: 230,
         borderWidth: 1,
         marginVertical: 5,
         alignSelf: 'center',

@@ -13,14 +13,13 @@ const Languages = () => {
     const [selectedLanguage, setSelectedLanguage] = useState('en');
 
     const locales = [
-        { tag: 'en', name: 'English' },
-        { tag: 'es', name: 'Spanish' },
-        { tag: 'ar', name: 'Arabic' },
-        { tag: 'pt', name: 'Portuguese' },
-        { tag: 'ru', name: 'Russian' },
-        { tag: 'fr', name: 'French' },
-        { tag: 'de', name: 'German' },
-        { tag: 'nl', name: 'Dutch' },
+        { tag: 'English', name: 'English' },
+        { tag: 'Spanish', name: 'Spanish' },
+        { tag: 'Arabic', name: 'Arabic' },
+        { tag: 'Russian', name: 'Russian' },
+        { tag: 'French', name: 'French' },
+        { tag: 'German', name: 'German' },
+        { tag: 'Dutch', name: 'Dutch' },
     ];
     //@ts-ignore
     const handleLanguageSelect = (languageTag) => {
