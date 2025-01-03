@@ -1,11 +1,31 @@
 import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View, Image, FlatList } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import axios from 'axios';
 
+
+type CardData = {
+    PropertyName: string;
+    price: number;
+    cadastralReference: string;
+    area: string;
+    bedroom: number;
+    bathroom: number;
+    pool?: boolean;
+    propertyType: string;
+    built: number;
+    plot: number;
+    condition: string;
+    PropertyHealthScore: number;
+    useableSpace: number;
+    features: string[];
+    description: string;
+    image: string;
+};
 
 const ActiveChat = [
     { id: '1', name: 'Rabika', role: 'Broker', image: require('../../Assets/Images/d.jpg') },
@@ -83,6 +103,20 @@ const renderRecent = ({ item }: { item: any }) => (
 const Contact = () => {
     const { t } = useTranslation();
     const navigation = useNavigation();
+    const [card, setCard] = useState<CardData | null>(null)
+    const fetchData = async () => {
+        try {
+            const response = await axios.get(`/services/all`);
+            setCard(response.data?.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+        console.log(card, 'cardDadfta')
+    }, []);
     return (
         <SafeAreaView style={{ backgroundColor: '#FFF', flex: 1 }}>
             <FlatList
@@ -117,34 +151,37 @@ const Contact = () => {
                     <View>
                         <Text style={styles.tctSP}>{t("Service providers")}</Text>
                         <View>
-                            {lawyerData.map((lawyer) => (
-                                <View key={lawyer.id} style={styles.newSection}>
-                                    <View style={styles.mainflexl}>
-                                        <View style={styles.container}>
-                                            <Image source={lawyer.image} style={styles.profilePic} />
+                            {
+                                //@ts-ignore
+                                card.map((card) => (
+                                    <View key={card.id} style={styles.newSection}>
+                                        <View style={styles.mainflexl}>
+                                            <View style={styles.container}>
+                                                <Image
+                                                    source={card.image} style={styles.profilePic} />
+                                            </View>
+                                            <View>
+                                                <Text style={styles.newHeader}>{card.name}</Text>
+                                                <Text style={styles.newHeadpara}>{card.description}</Text>
+                                            </View>
                                         </View>
-                                        <View>
-                                            <Text style={styles.newHeader}>{lawyer.name}</Text>
-                                            <Text style={styles.newHeadpara}>{lawyer.description}</Text>
+                                        <View style={styles.mainflexl2}>
+                                            <Ionicons name="call-outline" size={25} color={'#101828'} />
+                                            <Text style={styles.newPhone}>{card.contactNumber}</Text>
+                                        </View>
+                                        <View style={styles.mainflexl2}>
+                                            <Feather name="mail" size={25} color={'#101828'} />
+                                            <Text style={styles.newPhone}>{card.email}</Text>
+                                        </View>
+                                        <View style={styles.mainflexl2}>
+                                            <MaterialCommunityIcons name="search-web" size={25} color={'#101828'} />
+                                            <Text style={styles.newPhone}>{card.websiteLink}</Text>
+                                        </View>
+                                        <View style={styles.btnlwyer}>
+                                            <Text style={styles.btnlw}>{card.role}</Text>
                                         </View>
                                     </View>
-                                    <View style={styles.mainflexl2}>
-                                        <Ionicons name="call-outline" size={25} color={'#101828'} />
-                                        <Text style={styles.newPhone}>{lawyer.phone}</Text>
-                                    </View>
-                                    <View style={styles.mainflexl2}>
-                                        <Feather name="mail" size={25} color={'#101828'} />
-                                        <Text style={styles.newPhone}>{lawyer.email}</Text>
-                                    </View>
-                                    <View style={styles.mainflexl2}>
-                                        <MaterialCommunityIcons name="search-web" size={25} color={'#101828'} />
-                                        <Text style={styles.newPhone}>{lawyer.website}</Text>
-                                    </View>
-                                    <View style={styles.btnlwyer}>
-                                        <Text style={styles.btnlw}>{lawyer.job}</Text>
-                                    </View>
-                                </View>
-                            ))}
+                                ))}
                         </View>
                         {/* Existing Content */}
                         <View style={styles.or}>
@@ -369,7 +406,7 @@ const styles = StyleSheet.create({
         fontSize: 12,
         fontWeight: '500',
         color: '#72757A',
-        width: '47%',
+        // width: '47%',
     },
     newPhone: {
         fontSize: 16,
