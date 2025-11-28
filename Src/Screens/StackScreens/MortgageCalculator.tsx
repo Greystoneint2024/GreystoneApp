@@ -73,7 +73,6 @@ const MortgageCalculator = () => {
     const [loanTerms, setloanTerms] = useState('');
     const [interestRate, setinterestRate] = useState('');
     const [taxes, setTaxes] = useState("10%");
-    // const [taxes, setTaxes] = useState('');
     const [Inusurance, setInusurance] = useState('');
     const [healthCare, setHealthCare] = useState('');
     const [CFees, setCFees] = useState('');
@@ -92,7 +91,6 @@ const MortgageCalculator = () => {
                     loanTermYears: Number(loanTerms),
                     interestRate: Number(interestRate),
                     startDate: startDate,
-                    // propertyTaxPercentage: Number(taxes),
                     homeInsurance: Number(Inusurance),
                     healthCare: Number(healthCare),
                     communityFees: Number(CFees),
